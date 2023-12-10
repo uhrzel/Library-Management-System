@@ -84,6 +84,7 @@ if ($_SESSION['RollNo']) {
                                     $category = $row['Category'];
                                     $email = $row['EmailId'];
                                     $mobno = $row['MobNo'];
+                                    $stat = $row['Status'];
                                     ?>
                                     <i>
                                         <h1 class="card-title">
@@ -97,6 +98,8 @@ if ($_SESSION['RollNo']) {
                                         <p><b>Category: </b><?php echo $category ?></p>
                                         <br>
                                         <p><b>Mobile number: </b><?php echo $mobno ?></p>
+                                        <br>
+                                        <p><b>Status: </b><?php echo $stat ?></p>
                                         </b>
                                     </i>
 

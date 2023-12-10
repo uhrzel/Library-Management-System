@@ -1,20 +1,34 @@
 <?php
 require('dbconn.php');
+
 if (isset($_POST['verify'])) {
-    $enteredVerificationCode = $_POST['verificationCode'];
-    $userRollNo = $_SESSION['RollNo']; // Assuming $u is the RollNo
+    $enteredCode = $_POST['verificationCode'];
+    $rollNo = isset($_POST['RollNo']) ? $_POST['RollNo'] : '';
 
-    $verificationQuery = "SELECT * FROM `user` WHERE `RollNo` = '$userRollNo' AND BINARY `VerificationCode` = '$enteredVerificationCode'";
-    $verificationResult = $conn->query($verificationQuery);
+    if (!empty($rollNo)) {
+        // Fetch user data from the database
+        $sql = "SELECT VerificationCode FROM LMS.user WHERE RollNo='$rollNo'";
+        $result = $conn->query($sql);
 
-    if ($verificationResult && $verificationResult->num_rows > 0) {
-        // Update the user's status to "Verified" and clear the verification code
-        $updateStatusQuery = "UPDATE `user` SET `Status` = 'Verified', `VerificationCode` = '' WHERE `RollNo` = '$userRollNo'";
-        $conn->query($updateStatusQuery);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $storedCode = $row['VerificationCode'];
 
-        // Redirect to a success page or perform other actions
-        echo "<script type='text/javascript'>alert('Verification Successful!');window.location.href = 'index.php';</script>";
+            if ($enteredCode == $storedCode) {
+                $md5VerificationCode = md5($storedCode);
+                // Verification successful, update the status to 'Verified'
+                $updateSql = "UPDATE LMS.user SET Status='Verified', VerificationCode='$md5VerificationCode' WHERE RollNo='$rollNo'";
+
+                $conn->query($updateSql);
+
+                echo "<script type='text/javascript'>alert('Verification successful. Your account is now verified.'); window.location.href = 'index.php'</script>";
+            } else {
+                echo "<script type='text/javascript'>alert('Verification code is incorrect.'); window.location.href = 'verification_modal.php'</script>";
+            }
+        } else {
+            echo "<script type='text/javascript'>alert('User not found.'); window.location.href = 'index.php'</script>";
+        }
     } else {
-        echo "<script type='text/javascript'>alert('Invalid verification code for user RollNo: $userRollNo. Please try again.');window.location.href = 'verification_modal.php';</script>";
+        echo "<script type='text/javascript'>alert('RollNo not provided.'); window.location.href = 'index.php'</script>";
     }
 }

@@ -108,68 +108,83 @@ use PHPMailer\PHPMailer\Exception;
 		<p> &copy; 2023 | Library Management System </a></p>
 
 	</div>
-
 	<?php
 	if (isset($_POST['signin'])) {
 		$u = $_POST['RollNo'];
-		$p = $_POST['Password'];
+		$rawPassword = $_POST['Password']; // Password entered by the user
+
+		// MD5 the entered password
+		$md5Password = md5($rawPassword);
+
 		$c = $_POST['Category'];
 
-		$sql = "select * from LMS.user where RollNo='$u'";
+		$sql = "SELECT * FROM LMS.user WHERE RollNo='$u'";
 
 		$result = $conn->query($sql);
-		$row = $result->fetch_assoc();
-		$x = $row['Password'];
-		$y = $row['Type'];
-		if (strcasecmp($x, $p) == 0 && !empty($u) && !empty($p)) { //echo "Login Successful";
-			$_SESSION['RollNo'] = $u;
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_assoc();
+			$storedPassword = $row['Password'];
+			$y = $row['Type'];
+			$status = $row['Status'];
 
-			if ($y == 'Admin') {
-				echo header("Location:admin/index.php");
-			} elseif ($y == 'librarian') {
-				echo header("Location:librarian/index.php");
-			} elseif ($y == 'Student') {
-				echo header("Location:student/index.php");
+			// Compare the MD5 hashed entered password with the stored MD5 hash
+			if ($md5Password == $storedPassword && !empty($u) && !empty($rawPassword)) {
+				if ($status == 'Verified') {
+					// Login Successful
+					$_SESSION['RollNo'] = $u;
+
+					if ($y == 'Admin') {
+						echo header("Location:admin/index.php");
+					} elseif ($y == 'librarian') {
+						echo header("Location:librarian/index.php");
+					} elseif ($y == 'Student') {
+						echo header("Location:student/index.php");
+					} else {
+						echo header('Location:staff/index.php');
+					}
+				} else {
+					echo "<script type='text/javascript'>
+		alert('Failed to Login! Your account is not verified.')
+	</script>";
+				}
 			} else {
-				echo header('Location:staff/index.php');
+				echo "<script type='text/javascript'>
+		alert('Failed to Login! Incorrect IDNo or Password')
+	</script>";
 			}
-			//   if($y=='Admin')
-			//   echo header("Location:admin/index.php");
-			// elseif ($y == 'librarian') {
-			// echo header("Location:librarian/index.php");
-
-			// }if ($y =='student') {
-			// 	echo header("Location:student/index.php");
-			// }
-			//   elseif (condition) {
-			//   	 echo	header("Location:staff/index.php");
-			//   }
-
-
 		} else {
-			echo "<script type='text/javascript'>alert('Failed to Login! Incorrect IDNo or Password')</script>";
+			echo "<script type='text/javascript'>
+		alert('Failed to Login! User not found.')
+	</script>";
 		}
 	}
-	/* 
+
+
+
+	/*
 	if (isset($_POST['signup'])) {
-		$name = $_POST['Name'];
-		$email = $_POST['Email'];
-		$password = $_POST['Password'];
-		$mobno = $_POST['PhoneNumber'];
-		$rollno = $_POST['RollNo'];
-		$category = $_POST['Category'];
-		$department = $_POST['Department'];
-		$type = 'Student';
-		$status = 'Not Verified';
+	$name = $_POST['Name'];
+	$email = $_POST['Email'];
+	$password = $_POST['Password'];
+	$mobno = $_POST['PhoneNumber'];
+	$rollno = $_POST['RollNo'];
+	$category = $_POST['Category'];
+	$department = $_POST['Department'];
+	$type = 'Student';
+	$status = 'Not Verified';
 
-		$sql = "insert into LMS.user (Name,Type,Category,Department,RollNo,EmailId,MobNo,Password, Status) values ('$name','$type','$category','$department','$rollno','$email','$mobno','$password', '$status')";
+	$sql = "insert into LMS.user (Name,Type,Category,Department,RollNo,EmailId,MobNo,Password, Status) values ('$name','$type','$category','$department','$rollno','$email','$mobno','$password', '$status')";
 
-		if ($conn->query($sql) === TRUE) {
-			echo "<script type='text/javascript'>alert('Registration Successful')</script>";
-		} else {
-			//echo "Error: " . $sql . "<br>" . $conn->error;
-			echo "<script type='text/javascript'>alert('User Exists')</script>";
-		}
+	if ($conn->query($sql) === TRUE) {
+	echo "<script type='text/javascript'>
+		alert('Registration Successful')
+	</script>";
+	} else {
+	//echo "Error: " . $sql . "<br>" . $conn->error;
+	echo "<script type='text/javascript'>
+		alert('User Exists')
+	</script>";
+	}
 	} */
 
 
@@ -185,8 +200,8 @@ use PHPMailer\PHPMailer\Exception;
 		$type = 'Student';
 		$verificationCode = mt_rand(100000, 999999);
 		$status = 'Not Verified';
-
-		$sql = "insert into LMS.user (Name,Type,Category,Department,RollNo,EmailId,MobNo,Password, Status, VerificationCode) values ('$name','$type','$category','$department','$rollno','$email','$mobno','$password', '$status', '$verificationCode')";
+		$md5Password = md5($password);
+		$sql = "insert into LMS.user (Name,Type,Category,Department,RollNo,EmailId,MobNo,Password, Status, VerificationCode) values ('$name','$type','$category','$department','$rollno','$email','$mobno','$md5Password', '$status', '$verificationCode')";
 
 		if ($conn->query($sql) === TRUE) {
 			// Send verification email
@@ -194,30 +209,34 @@ use PHPMailer\PHPMailer\Exception;
 
 			// Server settings
 			$mail->isSMTP();
-			$mail->Host       = 'smtp.gmail.com';
-			$mail->SMTPAuth   = true;
-			$mail->Username   = 'ojt.rms.group.4@gmail.com';
-			$mail->Password   = 'hbpezpowjedwoctl';
+			$mail->Host = 'smtp.gmail.com';
+			$mail->SMTPAuth = true;
+			$mail->Username = 'ojt.rms.group.4@gmail.com';
+			$mail->Password = 'hbpezpowjedwoctl';
 			$mail->SMTPSecure = 'tls';
-			$mail->Port       = 587;
+			$mail->Port = 587;
 
 			// Sender information
 			$mail->setFrom('ojt.rms.group.4@gmail.com', 'Library Management System');
 			$mail->addAddress($email, $name);
 			$mail->isHTML(true);
 			$mail->Subject = 'Library Management System - Email Verification';
-			$mail->Body    = "Your verification code is: $verificationCode";
+			$mail->Body = "Your verification code is: $verificationCode";
 			try {
 				$mail->send();
 				echo "<script type='text/javascript'>
-            alert('Registration Successful. Check your email for verification.');
-            window.location.href = 'verification_modal.php';
-         </script>";
+		alert('Registration Successful. Check your email for verification.');
+		window.location.href = 'verification_modal.php?RollNo=" . urlencode($rollno) . "';
+	</script>";
 			} catch (Exception $e) {
-				echo "<script type='text/javascript'>alert('Error sending verification email');</script>";
+				echo "<script type='text/javascript'>
+		alert('Error sending verification email');
+	</script>";
 			}
 		} else {
-			echo "<script type='text/javascript'>alert('Error Inserting');</script>";
+			echo "<script type='text/javascript'>
+		alert('Error Inserting');
+	</script>";
 		}
 	}
 

@@ -21,9 +21,12 @@
                 <div class="modal-body">
                     <p>Please check your email for the verification code.</p>
                     <form action="verify.php" id="verificationForm" method="post">
+                        <!-- Add a hidden input field to store RollNo -->
+                        <input type="hidden" name="RollNo" value="<?php echo isset($_GET['RollNo']) ? htmlspecialchars($_GET['RollNo']) : ''; ?>">
                         <input type="text" name="verificationCode" class="form-control" placeholder="Verification Code" required>
                         <input type="submit" class="btn btn-primary mt-2" name="verify" value="Verify">
-                        </formid=>
+                    </form>
+
                 </div>
             </div>
         </div>

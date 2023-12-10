@@ -2,36 +2,35 @@
 require('dbconn.php');
 ?>
 
-<?php 
+<?php
 if ($_SESSION['RollNo'] == false) {
 
- echo header("Location:nicetry.php");
+    echo header("Location:nicetry.php");
 }
 
- $rollno = $_SESSION['RollNo'];
-                                $sql="select * from LMS.user where RollNo='$rollno'";
-                                $result=$conn->query($sql);
-                                $row=$result->fetch_assoc();
-                                
-                                $type = $row['Type'];
+$rollno = $_SESSION['RollNo'];
+$sql = "select * from LMS.user where RollNo='$rollno'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+
+$type = $row['Type'];
 
 
 
 
 if ($type == 'Student') {
-    
 
-echo header("Location:../student/index.php");
 
+    echo header("Location:../student/index.php");
 }
 if ($_SESSION['RollNo'] !== 'staff') {
 
 
-  
-    ?>
 
-<!DOCTYPE html>
-<html lang="en">
+?>
+
+    <!DOCTYPE html>
+    <html lang="en">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -41,9 +40,9 @@ if ($_SESSION['RollNo'] !== 'staff') {
         <link type="text/css" href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
         <link type="text/css" href="css/theme.css" rel="stylesheet">
         <link type="text/css" href="images/icons/css/font-awesome.css" rel="stylesheet">
-        <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
-            rel='stylesheet'>
+        <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600' rel='stylesheet'>
     </head>
+
     <body>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
@@ -53,8 +52,8 @@ if ($_SESSION['RollNo'] !== 'staff') {
                     <div class="nav-collapse collapse navbar-inverse-collapse">
                         <ul class="nav pull-right">
                             <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="images/user.png" class="nav-avatar" />
-                                <b class="caret"></b></a>
+                                    <img src="images/user.png" class="nav-avatar" />
+                                    <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="index.php">Your Profile</a></li>
                                     <!--li><a href="#">Edit Profile</a></li>
@@ -78,10 +77,10 @@ if ($_SESSION['RollNo'] !== 'staff') {
                         <div class="sidebar">
                             <ul class="widget widget-menu unstyled">
                                 <li class="active"><a href="index.php"><i class="menu-icon icon-home"></i>Home
-                                </a></li>
-                                <li class="active"><a href="../qr/index.php"><i class="menu-icon icon-home"></i>Visit Hours 
-                                </a></li>
-                                 <li><a href="message.php"><i class="menu-icon icon-inbox"></i>Messages</a>
+                                    </a></li>
+                                <li class="active"><a href="../qr/index.php"><i class="menu-icon icon-home"></i>Visit Hours
+                                    </a></li>
+                                <li><a href="message.php"><i class="menu-icon icon-inbox"></i>Messages</a>
                                 </li>
                                 <li><a href="recieve.php"><i class="menu-icon icon-inbox"></i>Recieve Message</a>
                                 </li>
@@ -92,7 +91,7 @@ if ($_SESSION['RollNo'] !== 'staff') {
                                 <li><a href="requests.php"><i class="menu-icon icon-tasks"></i>Issue/Return Requests </a></li>
                                 <!-- <li><a href="recommendations.php"><i class="menu-icon icon-list"></i>Book Recommendations </a></li> -->
                                 <li><a href="current.php"><i class="menu-icon icon-list"></i>Currently Issued Books </a></li>
-                                 <li><a href="pre.php"><i class="menu-icon icon-list"></i>Previously Borrowed Books </a></li>
+                                <li><a href="pre.php"><i class="menu-icon icon-list"></i>Previously Borrowed Books </a></li>
                                 <li><a href="history.php"><i class="menu-icon icon-list"></i>Recent Deletion Books </a></li>
                             </ul>
                             <ul class="widget widget-menu unstyled">
@@ -102,53 +101,58 @@ if ($_SESSION['RollNo'] !== 'staff') {
                         <!--/.sidebar-->
                     </div>
                     <!--/.span3-->
-                    
+
                     <div class="span9">
                         <center>
-                            <div class="card" style="width: 50%;"> 
+                            <div class="card" style="width: 50%;">
                                 <img class="card-img-top" src="images/profile2.png" alt="Card image cap">
                                 <div class="card-body">
 
-                                <?php
-                                $rollno = $_SESSION['RollNo'];
-                               
-                                $sql="select * from LMS.user where RollNo='$rollno'";
-                                $result=$conn->query($sql);
-                                $row=$result->fetch_assoc();
+                                    <?php
+                                    $rollno = $_SESSION['RollNo'];
 
-                                $name=$row['Name'];
-                                $category=$row['Category'];
-                                $email=$row['EmailId'];
-                                $mobno=$row['MobNo'];
-                                ?>    
+                                    $sql = "select * from LMS.user where RollNo='$rollno'";
+                                    $result = $conn->query($sql);
+                                    $row = $result->fetch_assoc();
+
+                                    $name = $row['Name'];
+                                    $category = $row['Category'];
+                                    $email = $row['EmailId'];
+                                    $mobno = $row['MobNo'];
+                                      $stats = $row['Status'];
+                                    ?>
                                     <i>
-                                    <h1 class="card-title"><center><?php echo $name ?></center></h1>
-                                    <br>
-                                    <p><b>Email ID: </b><?php echo $email ?></p>
-                                    <br>
-                                    <p><b>Mobile number: </b><?php echo $mobno ?></p>
-                                    </b>
-                                </i>
+                                        <h1 class="card-title">
+                                            <center><?php echo $name ?></center>
+                                        </h1>
+                                        <br>
+                                        <p><b>Email ID: </b><?php echo $email ?></p>
+                                        <br>
+                                        <p><b>Mobile number: </b><?php echo $mobno ?></p>
+                                        <br>
+                                        <p><b>Status: </b><?php echo $stats ?></p>
+                                        </b>
+                                    </i>
 
                                 </div>
                             </div>
-                        <br>
-                        <a href="edit_admin_details.php" class="btn btn-primary">Edit Details</a>
-                     <!--    <a href="addadmin.php" class="btn btn-primary">Add Admin</a> -->
-                        </center>               
+                            <br>
+                            <a href="edit_admin_details.php" class="btn btn-primary">Edit Details</a>
+                            <!--    <a href="addadmin.php" class="btn btn-primary">Add Admin</a> -->
+                        </center>
                     </div>
-                    
+
                     <!--/.span9-->
                 </div>
             </div>
             <!--/.container-->
         </div>
-<div class="footer">
+        <div class="footer">
             <div class="container">
                 <b class="copyright">&copy; 2023 LMS </b>All rights reserved.
             </div>
         </div>
-        
+
         <!--/.wrapper-->
         <script src="scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
         <script src="scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
@@ -157,14 +161,13 @@ if ($_SESSION['RollNo'] !== 'staff') {
         <script src="scripts/flot/jquery.flot.resize.js" type="text/javascript"></script>
         <script src="scripts/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="scripts/common.js" type="text/javascript"></script>
-      
+
     </body>
 
-</html>
+    </html>
 
 
-<?php }
-else {
+<?php } else {
     echo "<script type='text/javascript'>alert('Access Denied!!!')</script>";
 } ?>
 <!--  -->

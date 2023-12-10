@@ -108,7 +108,14 @@ require('dbconn.php');
 		<p> &copy; 2023 | Library Management System </a></p>
 
 	</div>
-
+	<div id="verificationModal" style="display:none;">
+		<h2>Enter Verification Code</h2>
+		<p>Please check your email for the verification code.</p>
+		<form id="verificationForm">
+			<input type="text" name="verificationCode" placeholder="Verification Code" required>
+			<input type="submit" value="Verify">
+		</form>
+	</div>
 	<?php
 	if (isset($_POST['signin'])) {
 		$u = $_POST['RollNo'];
@@ -151,6 +158,13 @@ require('dbconn.php');
 		}
 	}
 
+	require('./vendor/phpmailer/phpmailer/src/SMTP.php');
+	require('./vendor/phpmailer/phpmailer/src/PHPMailer.php');
+
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
+	use PHPMailer\PHPMailer\Exception;
+
 	if (isset($_POST['signup'])) {
 		$name = $_POST['Name'];
 		$email = $_POST['Email'];
@@ -161,16 +175,57 @@ require('dbconn.php');
 		$department = $_POST['Department'];
 		$type = 'Student';
 
-		$sql = "insert into LMS.user (Name,Type,Category,Department,RollNo,EmailId,MobNo,Password) values ('$name','$type','$category','$department','$rollno','$email','$mobno','$password')";
+		// Generate a verification code
+		$verificationCode = mt_rand(100000, 999999);
+
+		// Insert user data into the database
+		$sql = "INSERT INTO LMS.user (Name, Type, Category, Department, RollNo, EmailId, MobNo, Password, Status, VerificationCode) 
+            VALUES ('$name', '$type', '$category', '$department', '$rollno', '$email', '$mobno', '$password', 'Not Verified', '$verificationCode')";
 
 		if ($conn->query($sql) === TRUE) {
-			echo "<script type='text/javascript'>alert('Registration Successful')</script>";
-		} else {
-			//echo "Error: " . $sql . "<br>" . $conn->error;
-			echo "<script type='text/javascript'>alert('User Exists')</script>";
+			// Send email with verification code
+			$mail = new PHPMailer(true);
+			try {
+				$mail->isSMTP();
+				$mail->Host = 'smtp.gmail.com';
+				$mail->SMTPAuth = true;
+				$mail->Username = 'ojt.rms.group.4@gmail.com';
+				$mail->Password = 'hbpezpowjedwoctl';
+				$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+				$mail->Port = 587;
+
+				$mail->setFrom('ojt.rms.group.4@gmail.com', 'Library Management System');
+				$mail->addAddress($email, $name);
+
+				$mail->isHTML(true);
+				$mail->Subject = 'Email Verification';
+				$mail->Body    = 'Your verification code is: ' . $verificationCode;
+
+				// Check if the email was sent successfully
+				if ($mail->send()) {
+					// Show the verification modal
+					echo "<script>
+        document.getElementById('verificationModal').style.display = 'block';
+
+        document.getElementById('verificationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var verificationCode = document.getElementsByName('verificationCode')[0].value;
+            if (verificationCode === '$verificationCode') {
+                alert('Verification successful! You can now log in.');
+                window.location.href = 'index.php';
+            } else {
+                alert('Verification failed. Please try again.');
+            }
+        });
+    </script>";
+				} else {
+					echo "<script type='text/javascript'>alert('Failed to send verification email. Please try again.')</script>";
+				}
+			} catch (Exception $e) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+			}
 		}
 	}
-
 	?>
 
 </body>

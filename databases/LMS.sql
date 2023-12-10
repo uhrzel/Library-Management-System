@@ -149,18 +149,20 @@ CREATE TABLE `user` (
   `Department` varchar(255) NOT NULL,
   `EmailId` varchar(50) DEFAULT NULL,
   `MobNo` bigint(11) DEFAULT NULL,
-  `Password` varchar(50) DEFAULT NULL
+  `Password` varchar(50) DEFAULT NULL,
+  `Status` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 --
 -- Dumping data for table `user`
 --
+INSERT INTO `user` (`RollNo`, `Name`, `Type`, `Category`, `Department`, `EmailId`, `MobNo`, `Password`, `Status`) VALUES
+('1002416',  'King A.Albaracin', 'Student', 'Student', 'Compstud', 'kingalbaracin50@gmail.com', 975, 'q', 'Not Verified'),
+('admin', 'Administrator', 'Admin', 'admin', 'admin', 'admin@gmail.com', 0, 'admin', 'Verified'),
+('librarian', 'Librarian', 'librarian', 'librarian', 'library', 'librarymsulnac.edu.ph', 2, 'msu', 'Not Verified'),
+('staff', 'staff', 'staff', 'staff', 'library staff', 'staff', 0, 'staff', 'Verified');
 
-INSERT INTO `user` (`RollNo`, `Name`, `Type`, `Category`, `Department`, `EmailId`, `MobNo`, `Password`) VALUES
-('1002416', 'King A.Albaracin', 'Student', 'Student', 'Compstud', 'kingalbaracin50@gmail.com', 975, 'q'),
-('admin', 'Administrator', 'Admin', 'admin', 'admin', 'admin@gmail.com', 0, 'admin'),
-('librarian', 'Librarian', 'librarian', 'librarian', 'library', 'librarymsulnac.edu.ph', 2, 'msu'),
-('staff', 'staff', 'staff ', 'staff', 'library staff', 'staff', 0, 'staff');
 
 --
 -- Indexes for dumped tables

@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "arzelzolina10";
+$password = "";
 $database = "qrcodedb";
 
 // Create a connection

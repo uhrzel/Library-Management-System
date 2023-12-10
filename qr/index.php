@@ -149,7 +149,7 @@ if ($rollno == NULL) {
 							<?php
 							$server = "localhost";
 							$username = "root";
-							$password = "arzelzolina10";
+							$password = "";
 							$dbname = "qrcodedb";
 
 							$conn = new mysqli($server, $username, $password, $dbname);

@@ -7,30 +7,37 @@ The Library Management System is a web-based application that helps manage the o
 ## User Credentials
 
 ### Admin
+
 - Username: admin
 - Password: admin
 
 ### Student
+
 - Username: 0000000
 - Password: newpeso
 
 ### Staff
+
 - Username: 1002416
 - Password: 123
 
 ### Librarian
+
 - Username: 2121212111
 - Password: 123456
 
 ## Features
 
 - **Admin Features:**
-  - [List admin features here]
+
+  - [Manage System]
 
 - **Student Features:**
-  - [List student features here]
+
+  - [Borrow/Return Book]
 
 - **Staff Features:**
+
   - [List staff features here]
 
 - **Librarian Features:**

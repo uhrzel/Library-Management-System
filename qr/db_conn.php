@@ -2,7 +2,7 @@
 
 $sname = "localhost";
 $uname = "root";
-$password = "arzelzolina10";
+$password = "";
 
 $db_name = "qrcodedb";
 

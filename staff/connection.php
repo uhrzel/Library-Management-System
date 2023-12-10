@@ -3,7 +3,7 @@ function connection()
 {
     $host = "localhost";
     $username = "root";
-    $password = "arzelzolina10";
+    $password = "";
     $database = "LMS";
 
 

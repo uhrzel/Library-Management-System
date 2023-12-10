@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2023 at 03:29 PM
+-- Generation Time: Dec 10, 2023 at 04:41 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -161,7 +161,7 @@ INSERT INTO `user` (`RollNo`, `Name`, `Type`, `Category`, `Department`, `EmailId
 ('0000000', 'Arzel John Zolina', 'Student', 'Student', 'Compstud', 'arzeljrz17@gmail.com', 123, '72e728b24511375333e8eda0b373cb31', 'Verified', '1318ae15a52c171bf63b0db992ba1451'),
 ('1002416', 'test user', 'Staff', 'Student', 'Compstud', 'ajmixrhyme@gmail.com', 21, '202cb962ac59075b964b07152d234b70', 'Verified', '8da49a50f57dd37982908950b353ace0'),
 ('2121212111', 'test librarian', 'librarian', 'Faculty', 'Compstud', 'cypheruhrzel@gmail.com', 2121, 'e10adc3949ba59abbe56e057f20f883e', 'Verified', '52eafda73250fce3d286122669bebcbf'),
-('admin', 'Administrator', 'Admin', 'admin', 'admin', 'admin@gmail.com', 0, 'admin', 'Verified', '');
+('admin', 'Administrator', 'Admin', 'admin', 'admin', 'admin@gmail.com', 0, '21232f297a57a5a743894a0e4a801fc3', 'Verified', '');
 
 --
 -- Indexes for dumped tables

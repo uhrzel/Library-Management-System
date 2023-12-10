@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2022 at 02:08 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.1.32
+-- Generation Time: Dec 10, 2023 at 08:38 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -39,7 +38,7 @@ CREATE TABLE `book` (
   `Author` varchar(255) NOT NULL,
   `ISBN` varchar(255) NOT NULL,
   `Status` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -54,7 +53,7 @@ CREATE TABLE `message` (
   `Msg` varchar(255) DEFAULT NULL,
   `Date` date DEFAULT NULL,
   `Time` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -67,7 +66,7 @@ CREATE TABLE `recommendations` (
   `Book_Name` varchar(50) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   `RollNo` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -85,7 +84,7 @@ CREATE TABLE `record` (
   `Dues` int(255) NOT NULL,
   `Renewals_left` int(255) NOT NULL,
   `Time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -96,7 +95,7 @@ CREATE TABLE `record` (
 CREATE TABLE `renew` (
   `RollNo` varchar(50) NOT NULL,
   `BookId` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -108,7 +107,7 @@ CREATE TABLE `return` (
   `id` int(11) NOT NULL,
   `RollNo` varchar(255) NOT NULL,
   `BookId` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -120,7 +119,7 @@ CREATE TABLE `stock` (
   `id` int(11) NOT NULL,
   `stock_left` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -133,7 +132,7 @@ CREATE TABLE `tbl` (
   `deletor` varchar(255) NOT NULL,
   `item` varchar(255) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -150,19 +149,17 @@ CREATE TABLE `user` (
   `EmailId` varchar(50) DEFAULT NULL,
   `MobNo` bigint(11) DEFAULT NULL,
   `Password` varchar(50) DEFAULT NULL,
-  `Status` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+  `Status` varchar(50) DEFAULT NULL,
+  `VerificationCode` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `user`
 --
-INSERT INTO `user` (`RollNo`, `Name`, `Type`, `Category`, `Department`, `EmailId`, `MobNo`, `Password`, `Status`) VALUES
-('1002416',  'King A.Albaracin', 'Student', 'Student', 'Compstud', 'kingalbaracin50@gmail.com', 975, 'q', 'Not Verified'),
-('admin', 'Administrator', 'Admin', 'admin', 'admin', 'admin@gmail.com', 0, 'admin', 'Verified'),
-('librarian', 'Librarian', 'librarian', 'librarian', 'library', 'librarymsulnac.edu.ph', 2, 'msu', 'Not Verified'),
-('staff', 'staff', 'staff', 'staff', 'library staff', 'staff', 0, 'staff', 'Verified');
 
+INSERT INTO `user` (`RollNo`, `Name`, `Type`, `Category`, `Department`, `EmailId`, `MobNo`, `Password`, `Status`, `VerificationCode`) VALUES
+('1002416', 'King A.Albaracin', 'Student', 'Student', 'Compstud', 'kingalbaracin50@gmail.com', 975, 'q', 'Not Verified', ''),
+('admin', 'Administrator', 'Admin', 'admin', 'admin', 'admin@gmail.com', 0, 'admin', 'Verified', '');
 
 --
 -- Indexes for dumped tables

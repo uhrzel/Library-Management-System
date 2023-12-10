@@ -22,7 +22,6 @@ use PHPMailer\PHPMailer\Exception;
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="keywords" content="Library Member Login Form Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script type="application/x-javascript">
 		addEventListener("load", function() {
 			setTimeout(hideURLbar, 0);
@@ -108,25 +107,6 @@ use PHPMailer\PHPMailer\Exception;
 	<div class="footer w3layouts agileits">
 		<p> &copy; 2023 | Library Management System </a></p>
 
-	</div>
-	<div class="modal" id="verificationModal" tabindex="-1" role="dialog" aria-labelledby="verificationModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="verificationModalLabel">Enter Verification Code</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p>Please check your email for the verification code.</p>
-					<form id="verificationForm" method="post">
-						<input type="text" name="verificationCode" class="form-control" placeholder="Verification Code" required>
-						<input type="submit" class="btn btn-primary mt-2" name="verify" value="Verify">
-					</form>
-				</div>
-			</div>
-		</div>
 	</div>
 
 	<?php
@@ -229,9 +209,10 @@ use PHPMailer\PHPMailer\Exception;
 			$mail->Body    = "Your verification code is: $verificationCode";
 			try {
 				$mail->send();
-				echo "<script type='text/javascript'>alert('Registration Successful. Check your email for verification.');</script>";
-				echo
-				"<script type='text/javascript'>$('#verificationModal').modal('show'); </script>";
+				echo "<script type='text/javascript'>
+            alert('Registration Successful. Check your email for verification.');
+            window.location.href = 'verification_modal.php';
+         </script>";
 			} catch (Exception $e) {
 				echo "<script type='text/javascript'>alert('Error sending verification email');</script>";
 			}
@@ -241,46 +222,8 @@ use PHPMailer\PHPMailer\Exception;
 	}
 
 
-	if (isset($_POST['verify'])) {
-		$enteredCode = trim($_POST['verificationCode']);
-
-
-		// Assuming $u is defined somewhere in your code
-		$u = $_SESSION['RollNo']; // Update this line with how you are setting $u
-
-
-		$sql = "SELECT * FROM LMS.user WHERE RollNo = '$u' AND BINARY VerificationCode = '$enteredCode'";
-
-		$result = $conn->query($sql);
-
-		if ($result->num_rows > 0) {
-			echo "<script type='text/javascript'>alert('Debug: Verification Code Correct')</script>";
-
-			// Update user status to 'Verified'
-			$updateSql = "UPDATE LMS.user SET Status = 'Verified', VerificationCode = NULL WHERE RollNo = '$u'";
-			if ($conn->query($updateSql) === TRUE) {
-				echo "<script type='text/javascript'>alert('Verification Successfully.')</script>";
-				header('Location: index.php');
-				exit();
-			} else {
-				echo "<script type='text/javascript'>alert('Error updating status')</script>";
-			}
-		} else {
-			echo "<script type='text/javascript'>alert('Debug: Invalid verification code')</script>";
-		}
-	}
-
 	?>
 
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-	<!-- Your jQuery code to show the modal -->
-	<script>
-		$(document).ready(function() {
-			$('#verificationModal').modal('show');
-		});
-	</script>
 
 
 </body>
